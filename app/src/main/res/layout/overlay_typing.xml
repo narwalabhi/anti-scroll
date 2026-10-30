@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Second part of an override: copy the passage by typing it. The passage itself shows progress;
+     the field on top of it is transparent and blocks paste (in code). Also used by LoosenActivity. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="28dp"
+        android:paddingBottom="20dp">
+
+        <include layout="@layout/overlay_override_chip" />
+
+        <TextView
+            android:id="@+id/typingTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/typing_title"
+            android:textAppearance="@style/TextAppearance.AS.ScreenTitle" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/typingAccuracy"
+                style="@style/AS.Pill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_pill_dark"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                tools:text="Accuracy 97%" />
+
+            <TextView
+                android:id="@+id/typingNeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textAppearance="@style/TextAppearance.AS.Caption3"
+                android:textSize="13sp"
+                tools:text="Need 95%" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/typingCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AS.Caption"
+                tools:text="37 of 57" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/typingFeedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAppearance="@style/TextAppearance.AS.Caption"
+            android:textColor="@color/coral"
+            android:visibility="gone"
+            tools:text="Last try: 87% matched, 95% needed. Here's new text."
+            tools:visibility="visible" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+            <TextView
+                android:id="@+id/typingPassage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_card"
+                android:fontFamily="@font/inter_regular"
+                android:lineSpacingMultiplier="1.3"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="18dp"
+                android:textColor="@color/ink3"
+                android:textSize="22sp"
+                tools:text="the quiet light of early morning settles over the harbour" />
+
+            <EditText
+                android:id="@+id/typingInput"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:contentDescription="@string/typing_field"
+                android:cursorVisible="false"
+                android:gravity="top"
+                android:importantForAutofill="no"
+                android:textColor="@android:color/transparent"
+                android:textSize="1sp" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:text="@string/typing_no_paste"
+            android:textAppearance="@style/TextAppearance.AS.Caption3"
+            android:textSize="13sp"
+            app:drawableStartCompat="@drawable/ic_no_paste"
+            app:drawableTint="@color/ink3"
+            xmlns:app="http://schemas.android.com/apk/res-auto" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/typingSubmit"
+            style="@style/AS.Button.Primary.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:enabled="false"
+            android:text="@string/typing_finish" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/typingCancel"
+            style="@style/AS.Button.Text.Quiet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/challenge_cancel" />
+    </LinearLayout>
+</ScrollView>

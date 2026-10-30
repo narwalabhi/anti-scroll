@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="44dp"
+    android:orientation="horizontal">
+
+    <View
+        android:id="@+id/sectionDot"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:background="@drawable/bg_round_icon" />
+
+    <TextView
+        android:id="@+id/sectionName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        tools:text="Home feed" />
+
+    <TextView
+        android:id="@+id/sectionTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AS.Value"
+        tools:text="54 min" />
+
+    <TextView
+        android:id="@+id/sectionPercent"
+        android:layout_width="44dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:textAppearance="@style/TextAppearance.AS.Caption3"
+        android:textSize="13sp"
+        tools:text="50%" />
+</LinearLayout>

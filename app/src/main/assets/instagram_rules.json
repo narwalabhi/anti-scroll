@@ -1,0 +1,14 @@
+{
+  "tabs": [
+    { "id": "feed_tab", "label": "Home", "surface": "FEED" },
+    { "id": "clips_tab", "label": "Reels", "surface": "REELS" },
+    { "id": "direct_tab", "label": "Message", "surface": "DMS" },
+    { "id": "search_tab", "label": "Search and explore", "surface": "EXPLORE" },
+    { "id": "profile_tab", "label": "Profile", "surface": "PROFILE" }
+  ],
+  "tabPagerId": "swipeable_tab_view_pager",
+  "reelsPagerId": "clips_viewer_view_pager",
+  "photoPostInReelsViewerIds": ["clips_carousel_viewpager", "clips_carousel_image_media_content"],
+  "dmThreadIds": ["message_list"],
+  "storyViewerIds": ["reel_viewer_root"]
+}

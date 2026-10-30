@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- No packageNames filter: window changes from other apps tell us Instagram left the screen.
+     The service reads content only for Instagram (see docs/LLD.md, Foreground detection).
+     typeWindowContentChanged is added at runtime, only while Instagram is in front. -->
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accessibilityEventTypes="typeWindowStateChanged|typeViewClicked|typeViewScrolled"
+    android:accessibilityFeedbackType="feedbackGeneric"
+    android:accessibilityFlags="flagReportViewIds"
+    android:canRetrieveWindowContent="true"
+    android:description="@string/guard_service_description"
+    android:notificationTimeout="100" />

@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Today (docs/UI.md): one screen, three states (counting, guarding, needs attention) by showing
+     or hiding its cards. Filled in by TodayScreen from a TodayUiState. -->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="24dp">
+
+        <include
+            android:id="@+id/todayHeader"
+            layout="@layout/view_header" />
+
+        <!-- Needs attention -->
+        <LinearLayout
+            android:id="@+id/alertCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:accessibilityLiveRegion="assertive"
+            android:background="@drawable/bg_alert"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sora_bold"
+                android:text="@string/alert_title"
+                android:textColor="@color/ink"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/alertMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textAppearance="@style/TextAppearance.AS.BodySecondary"
+                tools:text="The Accessibility service turned off at 3:12 PM." />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/alertTurnOn"
+                style="@style/AS.Button.Primary.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/turn_accessibility_on" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/alertBattery"
+                style="@style/AS.Button.Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/alert_battery" />
+        </LinearLayout>
+
+        <!-- Baseline week -->
+        <LinearLayout
+            android:id="@+id/baselineCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sora_semibold"
+                    android:text="@string/baseline_title"
+                    android:textColor="@color/ink"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/baselineDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AS.Caption"
+                    tools:text="Day 1 of 7" />
+            </LinearLayout>
+
+            <com.abhishek.antiscroll.ui.widget.SegmentsView
+                android:id="@+id/baselineSegments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/baseline_copy"
+                android:textAppearance="@style/TextAppearance.AS.Caption" />
+        </LinearLayout>
+
+        <!-- Session running -->
+        <LinearLayout
+            android:id="@+id/sessionCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_round_icon"
+                    android:importantForAccessibility="no"
+                    android:padding="9dp"
+                    android:src="@drawable/ic_timer" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sora_semibold"
+                        android:text="@string/session_running"
+                        android:textColor="@color/ink"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/sessionLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textAppearance="@style/TextAppearance.AS.Caption"
+                        tools:text="6:12 left · override 2 of 5" />
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sessionEnd"
+                    style="@style/AS.Button.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/session_end" />
+            </LinearLayout>
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/sessionBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:max="1000"
+                app:indicatorColor="@color/ink"
+                app:trackColor="@color/surface2"
+                app:trackCornerRadius="3dp"
+                app:trackThickness="6dp" />
+        </LinearLayout>
+
+        <!-- Hero -->
+        <LinearLayout
+            android:id="@+id/heroCard"
+            style="@style/AS.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="@string/limit_total"
+                    android:textColor="@color/ink2"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/heroPill"
+                    style="@style/AS.Pill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="32 min left" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/heroTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textAppearance="@style/TextAppearance.AS.Display"
+                tools:text="1h 47m" />
+
+            <TextView
+                android:id="@+id/heroSub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textAppearance="@style/TextAppearance.AS.BodySecondary"
+                tools:text="of 1h 30m daily limit" />
+
+            <com.abhishek.antiscroll.ui.widget.GaugeView
+                android:id="@+id/heroGauge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp" />
+
+            <LinearLayout
+                android:id="@+id/surfaceLimitRows"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </LinearLayout>
+
+        <!-- Where your time went -->
+        <LinearLayout
+            android:id="@+id/breakdownCard"
+            style="@style/AS.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:paddingBottom="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/breakdown_title"
+                    android:textAppearance="@style/TextAppearance.AS.CardTitle" />
+
+                <TextView
+                    android:id="@+id/breakdownWhen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AS.Caption3"
+                    android:textSize="13sp"
+                    tools:text="Today" />
+            </LinearLayout>
+
+            <com.abhishek.antiscroll.ui.widget.StackedBarView
+                android:id="@+id/breakdownBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="6dp" />
+
+            <LinearLayout
+                android:id="@+id/breakdownRows"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <TextView
+                android:id="@+id/breakdownEmpty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/today_empty"
+                android:textAppearance="@style/TextAppearance.AS.BodySecondary"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <!-- Three stats -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <include
+                android:id="@+id/statOpens"
+                layout="@layout/item_stat"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/statAverage"
+                layout="@layout/item_stat"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/statThird"
+                layout="@layout/item_stat"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <!-- Week -->
+        <LinearLayout
+            android:id="@+id/weekCard"
+            style="@style/AS.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/weekTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAppearance="@style/TextAppearance.AS.CardTitle"
+                    tools:text="This week" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/historyLink"
+                    style="@style/AS.Button.Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:paddingHorizontal="8dp"
+                    android:text="@string/history_link"
+                    android:textColor="@color/ink2"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <com.abhishek.antiscroll.ui.widget.DayBarsView
+                android:id="@+id/weekBars"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/weekNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:textAppearance="@style/TextAppearance.AS.Caption3"
+                tools:text="Dashed line is your 1h 30m limit. Your day starts at 4:00 AM." />
+        </LinearLayout>
+
+        <!-- Gaps in tracking -->
+        <LinearLayout
+            android:id="@+id/gapsCard"
+            style="@style/AS.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:paddingBottom="8dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/gaps_title"
+                    android:textAppearance="@style/TextAppearance.AS.CardTitle" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/last_7_days"
+                    android:textAppearance="@style/TextAppearance.AS.Caption3"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/gaps_copy"
+                android:textAppearance="@style/TextAppearance.AS.Caption" />
+
+            <LinearLayout
+                android:id="@+id/gapRows"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

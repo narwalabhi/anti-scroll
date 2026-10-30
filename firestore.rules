@@ -1,0 +1,21 @@
+rules_version = '2';
+
+// The developer's copy (docs/LLD.md, Cloud copy): each install, signed in anonymously, may write
+// only its own documents, and read back only its own install document (to restore). The developer reads everything in the Firebase console.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /installs/{uid} {
+      allow create, update: if request.auth != null && request.auth.uid == uid;
+      // Read back only for a restore after signing in with Google.
+      allow get: if request.auth != null && request.auth.uid == uid;
+
+      match /days/{date} {
+        allow create, update: if request.auth != null && request.auth.uid == uid;
+      }
+
+      match /settingsChanges/{change} {
+        allow create, update: if request.auth != null && request.auth.uid == uid;
+      }
+    }
+  }
+}

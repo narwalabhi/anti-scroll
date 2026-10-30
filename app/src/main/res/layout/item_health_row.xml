@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View style="@style/AS.Divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="60dp"
+        android:orientation="horizontal"
+        android:paddingVertical="8dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/healthName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Accessibility service" />
+
+            <TextView
+                android:id="@+id/healthSub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textAppearance="@style/TextAppearance.AS.Caption3"
+                tools:text="Sees which Instagram screen is open" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/healthOn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:drawablePadding="6dp"
+            android:gravity="center_vertical"
+            android:text="@string/status_on"
+            android:textAppearance="@style/TextAppearance.AS.Label"
+            android:textColor="@color/ink2"
+            app:drawableStartCompat="@drawable/ic_check"
+            app:drawableTint="@color/ink2" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/healthAction"
+            style="@style/AS.Button.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            tools:text="Fix" />
+    </LinearLayout>
+</LinearLayout>

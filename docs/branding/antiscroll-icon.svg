@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <title>AntiScroll icon: break the loop</title>
+  <!-- Square, full-bleed source for the Play Store 512 px icon. The launcher icon in
+       app/src/main/res/drawable/ic_launcher_*.xml is the same drawing split into layers. -->
+  <rect width="512" height="512" fill="#14172A"/>
+  <path d="M256 256 C216 196 100 190 100 256 C100 322 216 316 256 256 C296 196 412 190 412 256 C412 322 296 316 256 256 Z" fill="none" stroke="#EEF1F8" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="306" y1="150" x2="206" y2="362" stroke="#14172A" stroke-width="88" stroke-linecap="round"/>
+  <line x1="306" y1="150" x2="206" y2="362" stroke="#FF6B4A" stroke-width="38" stroke-linecap="round"/>
+</svg>

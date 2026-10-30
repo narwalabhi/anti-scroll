@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- What the Accessibility permission is for, shown before Android's settings (docs/UI.md, First run, step 2). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/disclosureRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingVertical="24dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:accessibilityHeading="true"
+                android:text="@string/disclosure_title"
+                android:textAppearance="@style/TextAppearance.AS.Headline" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/disclosure_intro"
+                android:textAppearance="@style/TextAppearance.AS.Lead" />
+
+            <LinearLayout
+                style="@style/AS.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/disclosure_does"
+                    android:textAppearance="@style/TextAppearance.AS.CardTitle" />
+            <TextView
+                style="@style/AS.DisclosurePoint"
+                android:text="@string/disclosure_does_1"
+                app:drawableStartCompat="@drawable/ic_check"
+                app:drawableTint="@color/ink2" />
+            <TextView
+                style="@style/AS.DisclosurePoint"
+                android:text="@string/disclosure_does_2"
+                app:drawableStartCompat="@drawable/ic_check"
+                app:drawableTint="@color/ink2" />
+            <TextView
+                style="@style/AS.DisclosurePoint"
+                android:text="@string/disclosure_does_3"
+                app:drawableStartCompat="@drawable/ic_check"
+                app:drawableTint="@color/ink2" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/AS.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/disclosure_never"
+                    android:textAppearance="@style/TextAppearance.AS.CardTitle" />
+            <TextView
+                style="@style/AS.DisclosurePoint"
+                android:text="@string/disclosure_never_1"
+                app:drawableStartCompat="@drawable/ic_cross"
+                app:drawableTint="@color/coral" />
+            <TextView
+                style="@style/AS.DisclosurePoint"
+                android:text="@string/disclosure_never_2"
+                app:drawableStartCompat="@drawable/ic_cross"
+                app:drawableTint="@color/coral" />
+            <TextView
+                style="@style/AS.DisclosurePoint"
+                android:text="@string/disclosure_never_3"
+                app:drawableStartCompat="@drawable/ic_cross"
+                app:drawableTint="@color/coral" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/disclosure_warning"
+                android:textAppearance="@style/TextAppearance.AS.Caption" />
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/disclosureContinue"
+        style="@style/AS.Button.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/disclosure_continue" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/disclosureNotNow"
+        style="@style/AS.Button.Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/not_now" />
+</LinearLayout>

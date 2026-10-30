@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Edit a limit (docs/UI.md, Edit sheet): a 5-minute stepper, presets, the user's real day, the rule. -->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="24dp">
+
+        <View
+            android:layout_width="36dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/bg_handle" />
+
+        <TextView
+            android:id="@+id/editTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textAppearance="@style/TextAppearance.AS.ScreenTitle"
+            tools:text="All of Instagram" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/daily_limit"
+            android:textAppearance="@style/TextAppearance.AS.Caption" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/editMinus"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:contentDescription="@string/decrease_5"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                app:cornerRadius="28dp"
+                app:icon="@drawable/ic_minus"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="@color/ink"
+                app:strokeColor="@color/line" />
+
+            <TextView
+                android:id="@+id/editValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:accessibilityLiveRegion="polite"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.AS.Display"
+                android:textSize="48sp"
+                tools:text="1h 30m" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/editPlus"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:contentDescription="@string/increase_5"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                app:cornerRadius="28dp"
+                app:icon="@drawable/ic_plus"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="@color/ink"
+                app:strokeColor="@color/line" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/editPresets"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:singleSelection="true" />
+
+        <LinearLayout
+            android:id="@+id/editContext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_inset"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.abhishek.antiscroll.ui.widget.GaugeView
+                android:id="@+id/editGauge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/editContextText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textAppearance="@style/TextAppearance.AS.Caption"
+                tools:text="Your day 1 was 1h 47m." />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/editRule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/TextAppearance.AS.Caption3"
+            android:textSize="13sp"
+            tools:text="Counting only, so this applies now." />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/editSave"
+            style="@style/AS.Button.Primary.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/save_limit" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/editCancel"
+            style="@style/AS.Button.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

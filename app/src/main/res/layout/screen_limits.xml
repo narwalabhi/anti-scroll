@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Limits (docs/UI.md): the mode, the daily limits, the override ladder and how changes apply. -->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="24dp">
+
+        <include
+            android:id="@+id/limitsHeader"
+            layout="@layout/view_header" />
+
+        <LinearLayout
+            android:id="@+id/modeCard"
+            style="@style/AS.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/modeIcon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_round_icon"
+                    android:importantForAccessibility="no"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_eye" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/modeTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AS.CardTitle"
+                        tools:text="Counting only" />
+
+                    <TextView
+                        android:id="@+id/modeSub"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textAppearance="@style/TextAppearance.AS.Caption"
+                        tools:text="Baseline week, day 1 of 7" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/modeCopy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textAppearance="@style/TextAppearance.AS.BodySecondary"
+                tools:text="Limits show on Today, but nothing is blocked while you build your baseline." />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/modeButton"
+                style="@style/AS.Button.Secondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:minHeight="52dp"
+                tools:text="Start guarding early" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="24dp"
+            android:accessibilityHeading="true"
+            android:text="@string/daily_limits"
+            android:textAppearance="@style/TextAppearance.AS.SectionHeader" />
+
+        <LinearLayout
+            android:id="@+id/limitRows"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="24dp"
+            android:accessibilityHeading="true"
+            android:text="@string/ladder_title"
+            android:textAppearance="@style/TextAppearance.AS.SectionHeader" />
+
+        <LinearLayout
+            style="@style/AS.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ladder_copy"
+                android:textAppearance="@style/TextAppearance.AS.BodySecondary" />
+
+            <LinearLayout
+                android:id="@+id/ladderTable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_inset"
+                android:orientation="vertical"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp" />
+
+            <LinearLayout
+                android:id="@+id/ladderFacts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/changesNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_inset"
+            android:padding="16dp"
+            android:textAppearance="@style/TextAppearance.AS.Caption"
+            tools:text="Once guarding is on: lowering a limit applies straight away." />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

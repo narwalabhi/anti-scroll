@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Type and components from docs/UI.md: Sora for numbers and titles, Inter for the rest. -->
+<resources>
+    <!-- Text -->
+    <style name="TextAppearance.AS.Display" parent="">
+        <item name="android:fontFamily">@font/sora_extrabold</item>
+        <item name="android:textSize">56sp</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="TextAppearance.AS.ScreenTitle" parent="">
+        <item name="android:fontFamily">@font/sora_bold</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/ink</item>
+    </style>
+
+    <style name="TextAppearance.AS.OverlayTitle" parent="">
+        <item name="android:fontFamily">@font/sora_extrabold</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+
+    <style name="TextAppearance.AS.Headline" parent="">
+        <item name="android:fontFamily">@font/sora_bold</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+
+    <style name="TextAppearance.AS.CardTitle" parent="">
+        <item name="android:fontFamily">@font/sora_semibold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/ink</item>
+    </style>
+
+    <style name="TextAppearance.AS.Stat" parent="">
+        <item name="android:fontFamily">@font/sora_bold</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/ink</item>
+    </style>
+
+    <style name="TextAppearance.AS.Timer" parent="">
+        <item name="android:fontFamily">@font/sora_extrabold</item>
+        <item name="android:textSize">44sp</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="TextAppearance.AS.Body" parent="">
+        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/ink</item>
+    </style>
+
+    <style name="TextAppearance.AS.BodySecondary" parent="">
+        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/ink2</item>
+        <item name="android:lineSpacingMultiplier">1.15</item>
+    </style>
+
+    <style name="TextAppearance.AS.Lead" parent="TextAppearance.AS.BodySecondary">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.AS.Caption" parent="">
+        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/ink2</item>
+    </style>
+
+    <style name="TextAppearance.AS.Caption3" parent="">
+        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/ink3</item>
+    </style>
+
+    <style name="TextAppearance.AS.Label" parent="">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/ink</item>
+    </style>
+
+    <style name="TextAppearance.AS.Value" parent="">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/ink</item>
+    </style>
+
+    <style name="TextAppearance.AS.SectionHeader" parent="">
+        <item name="android:fontFamily">@font/sora_semibold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/ink2</item>
+    </style>
+
+    <style name="AS.TextView" parent="android:Widget.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.AS.Body</item>
+    </style>
+
+    <style name="TextAppearance.AS.Nav" parent="">
+        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TextAppearance.AS.NavActive" parent="">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <!-- Containers -->
+    <style name="AS.Card" parent="">
+        <item name="android:background">@drawable/bg_card</item>
+        <item name="android:padding">20dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="AS.Pill" parent="">
+        <item name="android:background">@drawable/bg_pill_neutral</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.AS.Label</item>
+    </style>
+
+    <style name="AS.Chip" parent="">
+        <item name="android:background">@drawable/bg_chip_outline</item>
+        <item name="android:minHeight">44dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">14dp</item>
+        <item name="android:paddingEnd">14dp</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.AS.Label</item>
+    </style>
+
+    <style name="AS.Divider" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/line</item>
+    </style>
+
+    <!-- Buttons: closing is big and easy, continuing smaller and slower (UI.md, principle 5). -->
+    <style name="AS.Button.Primary" parent="Widget.Material3.Button">
+        <item name="android:minHeight">60dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="cornerRadius">30dp</item>
+        <item name="backgroundTint">@color/button_primary_bg</item>
+        <item name="android:textColor">@color/button_primary_text</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="AS.Button.Primary.Small" parent="AS.Button.Primary">
+        <item name="android:minHeight">52dp</item>
+        <item name="cornerRadius">26dp</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="AS.Button.Secondary" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">56dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="cornerRadius">28dp</item>
+        <item name="strokeColor">@color/line</item>
+        <item name="android:textColor">@color/button_secondary_text</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="AS.Button.Small" parent="AS.Button.Secondary">
+        <item name="android:minHeight">44dp</item>
+        <item name="cornerRadius">22dp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:textColor">@color/ink</item>
+    </style>
+
+    <style name="AS.Button.Text" parent="Widget.Material3.Button.TextButton">
+        <item name="android:minHeight">44dp</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="AS.Button.Text.Coral" parent="AS.Button.Text">
+        <item name="android:textColor">@color/coral</item>
+    </style>
+
+    <style name="AS.Button.Text.Quiet" parent="AS.Button.Text">
+        <item name="android:textColor">@color/ink3</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <!-- Intention prompt choices: fully rounded, tinted when picked, no check mark. -->
+    <style name="AS.ChoiceChip" parent="Widget.Material3.Chip.Filter">
+        <item name="chipBackgroundColor">@color/chip_background</item>
+        <item name="chipStrokeColor">@color/line</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipMinHeight">44dp</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:textAppearance">@style/TextAppearance.AS.Label</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.AS.Full</item>
+        <item name="chipStartPadding">8dp</item>
+        <item name="chipEndPadding">8dp</item>
+    </style>
+
+    <style name="ShapeAppearance.AS.Full" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="AS.DisclosurePoint" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:drawablePadding">12dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">@style/TextAppearance.AS.Body</item>
+    </style>
+</resources>

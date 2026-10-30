@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dark tokens, exactly as docs/UI.md lists them. -->
+<resources>
+    <color name="bg">#0D1020</color>
+    <color name="surface">#161A2D</color>
+    <color name="surface2">#1F2440</color>
+    <color name="line">#2B3152</color>
+    <color name="ink">#EEF1F8</color>
+    <color name="ink2">#B4BAD0</color>
+    <color name="ink3">#8E96B3</color>
+    <color name="coral">#FF6B4A</color>
+    <color name="coral_tint">#24FF6B4A</color>
+    <color name="coral_wash">#1AFF6B4A</color>
+    <color name="on_coral">#0D1020</color>
+    <color name="ink_tint">#24EEF1F8</color>
+    <color name="bar_past">#8A92B0</color>
+    <color name="dashed">#5A6290</color>
+    <color name="ghost">#3A4166</color>
+    <color name="hatch">#2B3152</color>
+
+    <color name="section_feed">#8C9BFF</color>
+    <color name="section_reels">#C58BFF</color>
+    <color name="section_dms">#5CC8FF</color>
+    <color name="section_stories">#F2C75C</color>
+    <color name="section_explore">#6FDCB5</color>
+    <color name="section_other">#7A8199</color>
+</resources>

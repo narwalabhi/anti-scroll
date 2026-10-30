@@ -1,0 +1,57 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- docs/UI.md tokens on Material 3; light and dark come from the colour resources. -->
+    <style name="Base.Theme.AntiScroll" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/ink</item>
+        <item name="colorOnPrimary">@color/bg</item>
+        <item name="colorPrimaryContainer">@color/surface2</item>
+        <item name="colorOnPrimaryContainer">@color/ink</item>
+        <item name="colorSecondary">@color/ink2</item>
+        <item name="colorSecondaryContainer">@color/ink_tint</item>
+        <item name="colorOnSecondaryContainer">@color/ink</item>
+        <item name="android:colorBackground">@color/bg</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorSurfaceContainer">@color/surface</item>
+        <item name="colorSurfaceContainerLow">@color/surface</item>
+        <item name="colorSurfaceContainerHigh">@color/surface2</item>
+        <item name="colorOnSurface">@color/ink</item>
+        <item name="colorOnSurfaceVariant">@color/ink2</item>
+        <item name="colorOutline">@color/line</item>
+        <item name="colorOutlineVariant">@color/line</item>
+        <item name="colorError">@color/coral</item>
+        <!-- A theme-wide fontFamily would beat every textAppearance, so the default goes through the
+             TextView style instead. -->
+        <item name="android:textViewStyle">@style/AS.TextView</item>
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.AntiScroll.BottomSheet</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.AntiScroll.Dialog</item>
+    </style>
+
+    <style name="Theme.AntiScroll" parent="Base.Theme.AntiScroll" />
+
+    <style name="ThemeOverlay.AntiScroll.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.AntiScroll.BottomSheet</item>
+        <item name="android:navigationBarColor">@color/surface</item>
+    </style>
+
+    <style name="Widget.AntiScroll.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">@color/surface</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.AntiScroll.Sheet</item>
+    </style>
+
+    <style name="ShapeAppearance.AntiScroll.Sheet" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">28dp</item>
+        <item name="cornerSizeTopRight">28dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <style name="ThemeOverlay.AntiScroll.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorSurfaceContainerHigh">@color/surface</item>
+        <item name="colorPrimary">@color/ink</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+    </style>
+</resources>
