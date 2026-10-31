@@ -92,13 +92,15 @@ class ScreenEffectHandler(
         view.findViewById<View>(R.id.pauseRingBox).isVisible = true
         view.findViewById<View>(R.id.pauseIcon).isVisible = false
         view.findViewById<View>(R.id.pausePill).isVisible = false
-        view.findViewById<TextView>(R.id.pauseHeading).text = themed.getString(R.string.pause_heading, status.opens)
+        // Opens count once the user gets in, so this one would be the next.
+        view.findViewById<TextView>(R.id.pauseHeading).text = themed.getString(R.string.pause_heading, status.opens + 1)
         view.findViewById<TextView>(R.id.pauseSub).text = themed.getString(
             R.string.pause_sub_left,
             Durations.hm(status.usedMillis),
             Durations.minutesText(status.leftMillis),
         )
         primary(view, R.id.pausePrimary, themed.getString(R.string.close_instagram)) { send(GuardEvent.LeaveChosen) }
+        secondary.isVisible = true // a "Going back…" on a block screen hides it, and this view is reused
         secondary.setOnClickListener { send(GuardEvent.PauseFinished) }
         blockView = null
         overlay.show(view)
@@ -183,6 +185,7 @@ class ScreenEffectHandler(
         }
         primary(view, R.id.pausePrimary, leaveLabel(reason)) { send(GuardEvent.LeaveChosen) }
         view.findViewById<MaterialButton>(R.id.pauseSecondary).apply {
+            isVisible = true
             isEnabled = true
             text = twoLine(themed, themed.getString(R.string.continue_anyway), overrideDetail(override, status))
             setOnClickListener { send(GuardEvent.OverrideRequested(clock.now())) }

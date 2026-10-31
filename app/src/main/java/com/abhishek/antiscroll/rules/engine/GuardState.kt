@@ -9,10 +9,17 @@ import java.time.Instant
 /** What the engine knows. Instagram is usable only while [Running]; every other state shows a screen or nothing. */
 sealed interface GuardState {
     data object Idle : GuardState
-    data object Pause : GuardState
+    /** The pause on open, done at [endsAt]: it runs in real time, also while the user is away. */
+    data class Pause(val endsAt: Instant) : GuardState
     data object Intention : GuardState
     data class Running(val session: Session) : GuardState
     data class Away(val session: Session) : GuardState // left mid-session; back before allowedUntil resumes it
+
+    /**
+     * Left during the pause or the intention prompt at [leftAt]. Back within the resume window, the
+     * pause carries on (it kept running) or, if [pauseDone], the prompt comes straight back.
+     */
+    data class Interrupted(val pauseEndsAt: Instant, val pauseDone: Boolean, val leftAt: Instant) : GuardState
     data class Blocked(val reason: BlockReason, val session: Session?) : GuardState
 
     /** Earning the [number]th override of the day by passing [step]'s challenges. */

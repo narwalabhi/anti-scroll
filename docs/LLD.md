@@ -102,7 +102,7 @@ data class DayUsage(
 )
 ```
 
-- `InstagramOpened` adds one open (not again while already open). `SurfaceChanged` sets the current surface. `InstagramClosed` stops counting.
+- `InstagramOpened` adds one open (not again while already open), unless the runner says not to: with guarding on it counts the open only when the engine reaches Running, once per visit (`UsageTracker.countOpen`, 2026-10-30). `SurfaceChanged` sets the current surface. `InstagramClosed` stops counting.
 - Each `Tick` adds the time since the previous tick to the current surface (Other until a surface is known), capped at 5 seconds so a stalled handler or a sleep does not overcount, and never negative.
 - When `DayClock` says an event is in a later day than `usage.day`, the tracker starts a fresh `DayUsage` first and the runner publishes `DayReset`. A session that spans the reset counts as one open in the new day, and the tick interval that crosses the reset counts in the new day.
 - The day only moves forward: a clock moved back into the previous day keeps the current counters. This replaces a separate `lastSeen` field.
@@ -189,8 +189,10 @@ Instagram is usable only in the Running state. Every other state shows an overla
 | State | Event | Next state | Effects |
 | --- | --- | --- | --- |
 | Idle | `InstagramOpened` | Pause; Blocked(SessionTimeUp) during the break after a session (milestone 3); Blocked(DailyTotal) when the day's total is already spent (milestone 5) | `ShowPause`, or `ShowBlock` |
-| Pause | `PauseFinished` | Intention | `ShowIntention` |
-| Pause, Intention | `InstagramClosed` | Idle | `Dismiss` |
+| Pause(endsAt) | `PauseFinished` (only at or after `endsAt`) | Intention | `ShowIntention` |
+| Pause(endsAt), Intention | `InstagramClosed` | Interrupted(pauseEndsAt, pauseDone, leftAt) (2026-10-30) | `Dismiss` |
+| Interrupted | `InstagramOpened` within 2 minutes of leaving | Pause(same `endsAt`) with the seconds left (maybe 0), or Intention if the pause was done; the daily total checked first | `ShowPause`, `ShowIntention`, or `ShowBlock` |
+| Interrupted | `InstagramOpened` later, or `Tick` past the window | as from Idle; Idle | as from Idle; none |
 | Intention | `IntentionChosen` | Running, with the minutes capped | `Dismiss` |
 | Intention | `LeaveChosen` ("Not now") | Idle | `Dismiss`, `GoHome` |
 | Running | `Tick`, `Swiped`, `SurfaceChanged` | Running, or Blocked when a `BudgetRule` says Block or the session time is up. Time up starts the break, and after an override session also the cooldown, both saved in the returned usage | none, or `ShowBlock` |

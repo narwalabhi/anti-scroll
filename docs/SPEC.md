@@ -35,6 +35,8 @@ Success check: log one week of Instagram time with enforcement off (baseline), t
 6. An override goes through the ladder: wait timer, then a typing test. A granted session returns to step 3, with less time each override.
 
 - The pause lasts 5 seconds. The intention prompt offers a purpose (reply to messages, post or share, look something up, just browsing) and 5, 10, 15 or 20 minutes (20 added 2026-10-30; longer only after friends' feedback), or "Not now", which goes home.
+- The pause runs in real time (decided 2026-10-30): leaving during the pause or the intention prompt and coming back within 2 minutes carries on where it was (the pause's remaining seconds, or the prompt); after 2 minutes, a fresh pause.
+- Opens count when the user gets into Instagram (a session starts or resumes), once per visit; meeting the pause or a block and turning back isn't an open (decided 2026-10-30). With guarding off, every open counts.
 - Leaving Instagram mid-session and coming back before the time is up resumes the session without a pause. The session ends at its time in real time, so leaving never adds minutes.
 - Until the override ladder exists (milestone 3), the time's-up screen offers "Leave" (home) or "New session" (back through the pause and prompt).
 

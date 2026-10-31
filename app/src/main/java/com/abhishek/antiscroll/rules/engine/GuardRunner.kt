@@ -81,6 +81,7 @@ class GuardRunner(
         }
         count(event, at)
         if (enforcementEnabled) decide(event, at)
+        countOpenOnEntry()
     }
 
     /**
@@ -125,7 +126,8 @@ class GuardRunner(
 
     private fun count(event: GuardEvent, at: Instant) {
         val before = state
-        state = tracker.next(before, event)
+        // With guarding on, an open counts only once Instagram can be used (see countOpenOnEntry).
+        state = tracker.next(before, event, countOpen = !enforcementEnabled)
 
         if (state.usage.day.isAfter(before.usage.day)) {
             store.save(before.usage) // the old day's final counters
@@ -143,6 +145,16 @@ class GuardRunner(
             save(at)
         } else if (at.isBefore(lastSavedAt) || Duration.between(lastSavedAt, at) >= SAVE_INTERVAL) {
             save(at)
+        }
+    }
+
+    /**
+     * With guarding on, a visit counts as an open when the user gets into Instagram (a session starts
+     * or resumes), not when they meet the pause or a block and turn back. Once per visit.
+     */
+    private fun countOpenOnEntry() {
+        if (enforcementEnabled && guardState is GuardState.Running && state.isOpen && !state.openCounted) {
+            state = tracker.countOpen(state)
         }
     }
 
@@ -184,13 +196,13 @@ class GuardRunner(
             publish(EngineEvent.SessionEndedEarly(at))
         }
         // "Not now" or Leave on any block, whatever the intervention made of it.
-        if (event == GuardEvent.LeaveChosen && (before == GuardState.Pause || before == GuardState.Intention || before is GuardState.Blocked)) {
+        if (event == GuardEvent.LeaveChosen && (before is GuardState.Pause || before == GuardState.Intention || before is GuardState.Blocked)) {
             publish(EngineEvent.LeftByChoice(at))
         }
     }
 
     private fun GuardState.showsScreen() =
-        this == GuardState.Pause || this == GuardState.Intention || this is GuardState.Blocked ||
+        this is GuardState.Pause || this == GuardState.Intention || this is GuardState.Blocked ||
             this is GuardState.Challenging
 
     private fun save(at: Instant) {

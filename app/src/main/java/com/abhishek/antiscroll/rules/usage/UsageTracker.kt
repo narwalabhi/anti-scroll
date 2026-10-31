@@ -29,6 +29,8 @@ class UsageTracker(
         val lastTickAt: Instant? = null,
         /** Time counted in the current visit, on the current date. */
         val visitMillis: Long = 0L,
+        /** Whether the current visit has been counted as an open yet. */
+        val openCounted: Boolean = false,
     )
 
     fun dayOf(at: Instant): LocalDate = dayClock.dayOf(at, clock.zone)
@@ -44,23 +46,23 @@ class UsageTracker(
         )
     }
 
-    fun next(state: State, event: GuardEvent): State = when (event) {
+    /**
+     * [countOpen] false leaves the open uncounted until [countOpen] is called (with guarding on, the
+     * runner counts it once the user gets into Instagram).
+     */
+    fun next(state: State, event: GuardEvent, countOpen: Boolean = true): State = when (event) {
         is GuardEvent.InstagramOpened -> {
             val current = rollOver(state, event.at)
             if (current.isOpen) {
                 current
             } else {
-                current.copy(
-                    usage = current.usage.copy(opens = current.usage.opens + 1),
-                    stats = current.stats.copy(opens = current.stats.opens + 1),
-                    isOpen = true,
-                    lastTickAt = event.at,
-                    visitMillis = 0L,
-                )
+                val opened = current.copy(isOpen = true, lastTickAt = event.at, visitMillis = 0L, openCounted = false)
+                if (countOpen) countOpen(opened) else opened
             }
         }
         // The surface is forgotten too, so the next session reports its own surface from the start.
-        GuardEvent.InstagramClosed -> state.copy(isOpen = false, surface = null, lastTickAt = null, visitMillis = 0L)
+        GuardEvent.InstagramClosed ->
+            state.copy(isOpen = false, surface = null, lastTickAt = null, visitMillis = 0L, openCounted = false)
         is GuardEvent.SurfaceChanged -> state.copy(surface = event.surface)
         is GuardEvent.Swiped -> if (state.isOpen) countSwipe(state, event.surface) else state
         // While closed, a tick counts nothing but still starts a new day on time (the status screen sends one).
@@ -74,6 +76,16 @@ class UsageTracker(
         is GuardEvent.ChallengeCancelled,
         is GuardEvent.EndSessionRequested,
         -> state
+    }
+
+    /** Counts the current visit as an open, once. */
+    fun countOpen(state: State): State {
+        if (!state.isOpen || state.openCounted) return state
+        return state.copy(
+            usage = state.usage.copy(opens = state.usage.opens + 1),
+            stats = state.stats.copy(opens = state.stats.opens + 1),
+            openCounted = true,
+        )
     }
 
     private fun countSwipe(state: State, surface: Surface): State = state.copy(
@@ -109,7 +121,7 @@ class UsageTracker(
      * override count, cooldown and break start over at the reset hour.
      */
     private fun rollOver(state: State, at: Instant): State {
-        val opensCarried = if (state.isOpen) 1 else 0
+        val opensCarried = if (state.isOpen && state.openCounted) 1 else 0
         val day = dayOf(at)
         val usage = if (day.isAfter(state.usage.day)) {
             DayUsage(day, opens = opensCarried, session = state.usage.session)

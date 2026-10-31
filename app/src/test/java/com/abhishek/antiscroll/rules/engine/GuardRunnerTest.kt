@@ -65,7 +65,8 @@ class GuardRunnerTest {
     private val ladder = LadderSettings()
     private val budgets = Budgets(dailyTotal = Duration.ofMinutes(90), perSurface = mapOf(Surface.REELS to Duration.ofMinutes(30)))
     private val engine = GuardEngine(
-        LaunchSettings(), ladder, CountLadderPolicy(ladder), ChallengeFactory(TypingSentences(Random(1))),
+        // No pause: these tests are about the runner, not the pause's length (GuardEngineTest covers that).
+        LaunchSettings(pauseSeconds = 0), ladder, CountLadderPolicy(ladder), ChallengeFactory(TypingSentences(Random(1))),
         budgets, listOf(DailyTotalBudgetRule(budgets), SurfaceBudgetRule(budgets)),
         StepBackIntervention(fallback = GoHomeIntervention()),
     )
@@ -195,8 +196,8 @@ class GuardRunnerTest {
         val runner = enforcingRunner()
         runner.handle(InstagramOpened(clock.now()))
         runner.tickSeconds(2)
-        assertEquals(listOf<Effect>(Effect.ShowPause(5)), effects.effects)
-        assertEquals(GuardState.Pause, runner.guardState)
+        assertEquals(listOf<Effect>(Effect.ShowPause(0)), effects.effects)
+        assertTrue(runner.guardState is GuardState.Pause)
         assertEquals(2_000L, runner.usage.totalMillis)
     }
 
@@ -413,7 +414,7 @@ class GuardRunnerTest {
         val runner = enforcingRunner()
         runner.handle(InstagramOpened(clock.now()))
         runner.enforcementEnabled = false
-        assertEquals(listOf(Effect.ShowPause(5), Effect.Dismiss), effects.effects)
+        assertEquals(listOf(Effect.ShowPause(0), Effect.Dismiss), effects.effects)
         assertEquals(GuardState.Idle, runner.guardState)
     }
 
@@ -438,7 +439,7 @@ class GuardRunnerTest {
         assertEquals(emptyList<Effect>(), effects.effects)
         runner.handle(InstagramClosed)
         runner.handle(InstagramOpened(clock.now()))
-        assertEquals(listOf<Effect>(Effect.ShowPause(5)), effects.effects)
+        assertEquals(listOf<Effect>(Effect.ShowPause(0)), effects.effects)
     }
 
     @Test
@@ -470,5 +471,30 @@ class GuardRunnerTest {
         assertEquals(9, runner.usage.opens)
         assertEquals(2, store.load(today)?.overridesUsed)
         assertEquals(9, statsStore.load(runner.stats.date)?.opens)
+    }
+
+    @Test
+    fun `with guarding on, an open counts only once Instagram can be used`() {
+        val runner = enforcingRunner()
+        runner.handle(InstagramOpened(clock.now()))
+        assertEquals(0, runner.usage.opens) // met the pause
+        runner.handle(InstagramClosed)
+        assertEquals(0, runner.usage.opens) // turned back: not an open
+
+        runner.handle(InstagramOpened(clock.now()))
+        clock.advance(Duration.ofSeconds(6))
+        runner.handle(GuardEvent.PauseFinished)
+        runner.handle(GuardEvent.IntentionChosen("Just browsing", 10, clock.now()))
+        assertEquals(1, runner.usage.opens)
+        assertEquals(1, runner.stats.opens)
+        runner.tickSeconds(3)
+        assertEquals(1, runner.usage.opens) // once per visit
+    }
+
+    @Test
+    fun `with guarding off, every open counts`() {
+        val runner = runner()
+        runner.handle(InstagramOpened(clock.now()))
+        assertEquals(1, runner.usage.opens)
     }
 }

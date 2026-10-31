@@ -47,11 +47,19 @@ class GuardEngine(
                 is GuardEvent.InstagramOpened -> open(usage, event.at)
                 else -> stay()
             }
-            GuardState.Pause -> when (event) {
-                GuardEvent.PauseFinished -> to(GuardState.Intention, intentionPrompt(usage))
+            is GuardState.Pause -> when (event) {
+                // Only once the pause's time is up; the screen enables the button then, this makes sure.
+                GuardEvent.PauseFinished ->
+                    if (now.isBefore(state.endsAt)) stay() else to(GuardState.Intention, intentionPrompt(usage))
                 // "Close Instagram" on the pause.
                 GuardEvent.LeaveChosen -> to(GuardState.Idle, Effect.Dismiss, Effect.GoHome)
-                GuardEvent.InstagramClosed -> to(GuardState.Idle, Effect.Dismiss)
+                GuardEvent.InstagramClosed -> to(GuardState.Interrupted(state.endsAt, pauseDone = false, leftAt = now), Effect.Dismiss)
+                else -> stay()
+            }
+            is GuardState.Interrupted -> when (event) {
+                is GuardEvent.InstagramOpened -> resume(state, usage, event.at)
+                // The window passed while away: the next open starts fresh.
+                is GuardEvent.Tick -> if (withinResumeWindow(state, event.at)) stay() else to(GuardState.Idle)
                 else -> stay()
             }
             GuardState.Intention -> when (event) {
@@ -60,7 +68,7 @@ class GuardEngine(
                     Transition(GuardState.Running(session), listOf(Effect.Dismiss), usage.copy(session = session))
                 }
                 GuardEvent.LeaveChosen -> to(GuardState.Idle, Effect.Dismiss, Effect.GoHome)
-                GuardEvent.InstagramClosed -> to(GuardState.Idle, Effect.Dismiss)
+                GuardEvent.InstagramClosed -> to(GuardState.Interrupted(now, pauseDone = true, leftAt = now), Effect.Dismiss)
                 else -> stay()
             }
             is GuardState.Running -> when (event) {
@@ -170,9 +178,25 @@ class GuardEngine(
         return if (breakUntil != null && at.isBefore(breakUntil)) {
             block(BlockReason.SessionTimeUp, null, usage, at)
         } else {
-            Transition(GuardState.Pause, listOf(Effect.ShowPause(launch.pauseSeconds)), usage)
+            Transition(GuardState.Pause(at.plusSeconds(launch.pauseSeconds.toLong())), listOf(Effect.ShowPause(launch.pauseSeconds)), usage)
         }
     }
+
+    /**
+     * Back after leaving the pause or prompt: within the window, carry on where it was (the pause's
+     * remaining seconds, which may be none, or the prompt); after it, a fresh open. The daily total and
+     * the break are checked first either way.
+     */
+    private fun resume(state: GuardState.Interrupted, usage: DayUsage, at: Instant): Transition {
+        if (!withinResumeWindow(state, at)) return open(usage, at)
+        budgetBlock(null, usage, null, at)?.let { return block(it, null, usage, at) }
+        if (state.pauseDone) return Transition(GuardState.Intention, listOf(intentionPrompt(usage)), usage)
+        val left = ((Duration.between(at, state.pauseEndsAt).toMillis() + 999) / 1000).coerceAtLeast(0L)
+        return Transition(GuardState.Pause(state.pauseEndsAt), listOf(Effect.ShowPause(left.toInt())), usage)
+    }
+
+    private fun withinResumeWindow(state: GuardState.Interrupted, at: Instant) =
+        !at.isBefore(state.leftAt) && Duration.between(state.leftAt, at) <= RESUME_WINDOW
 
     /**
      * Null while the session simply runs on. Time up comes first; a session that ends with the
@@ -299,5 +323,8 @@ class GuardEngine(
     companion object {
         /** The purpose of an override session reached without one, e.g. reopening during the break. */
         const val OVERRIDE_PURPOSE = "Override"
+
+        /** How long after leaving the pause or prompt coming back carries on instead of starting over. */
+        val RESUME_WINDOW: Duration = Duration.ofMinutes(2)
     }
 }

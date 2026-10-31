@@ -93,7 +93,7 @@ class GuardEngineTest {
 
     @Test
     fun `opening Instagram shows the pause`() =
-        assertTransition(GuardState.Idle, InstagramOpened(t0), GuardState.Pause, showPause)
+        assertTransition(GuardState.Idle, InstagramOpened(t0), GuardState.Pause(at(5)), showPause)
 
     @Test
     fun `other events while idle do nothing`() {
@@ -116,18 +116,18 @@ class GuardEngineTest {
 
     @Test
     fun `opening once the break is over shows the pause`() =
-        assertTransition(GuardState.Idle, InstagramOpened(at(900)), GuardState.Pause, showPause, usage = fresh.copy(breakUntil = at(900)))
+        assertTransition(GuardState.Idle, InstagramOpened(at(900)), GuardState.Pause(at(905)), showPause, usage = fresh.copy(breakUntil = at(900)))
 
     // Pause and Intention
 
     @Test
     fun `the pause ends in the intention prompt`() =
-        assertTransition(GuardState.Pause, PauseFinished, GuardState.Intention, showIntention)
+        assertTransition(GuardState.Pause(t0), PauseFinished, GuardState.Intention, showIntention)
 
     @Test
     fun `leaving during the pause or prompt dismisses it`() {
-        assertTransition(GuardState.Pause, InstagramClosed, GuardState.Idle, Effect.Dismiss)
-        assertTransition(GuardState.Intention, InstagramClosed, GuardState.Idle, Effect.Dismiss)
+        assertTransition(GuardState.Pause(at(5)), InstagramClosed, GuardState.Interrupted(at(5), pauseDone = false, leftAt = t0), Effect.Dismiss)
+        assertTransition(GuardState.Intention, InstagramClosed, GuardState.Interrupted(t0, pauseDone = true, leftAt = t0), Effect.Dismiss)
     }
 
     @Test
@@ -215,7 +215,7 @@ class GuardEngineTest {
     @Test
     fun `coming back after the break shows the pause`() {
         val result = next(GuardState.Away(session), InstagramOpened(at(600 + 15 * 60)))
-        assertEquals(GuardState.Pause, result.state)
+        assertEquals(GuardState.Pause(at(600 + 15 * 60 + 5)), result.state)
         assertEquals(listOf<Effect>(showPause), result.effects)
     }
 
@@ -599,19 +599,19 @@ class GuardEngineTest {
     fun `the prompt offers only lengths that fit, plus rest of today`() {
         assertEquals(
             Effect.ShowIntention(launch.purposes, listOf(5), restOfToday = 8, minutesLeftToday = 8),
-            next(GuardState.Pause, PauseFinished, used(82)).effects.single(),
+            next(GuardState.Pause(t0), PauseFinished, used(82)).effects.single(),
         )
         assertEquals(
             Effect.ShowIntention(launch.purposes, listOf(5, 10), restOfToday = 12, minutesLeftToday = 12),
-            next(GuardState.Pause, PauseFinished, used(78)).effects.single(),
+            next(GuardState.Pause(t0), PauseFinished, used(78)).effects.single(),
         )
         assertEquals(
             Effect.ShowIntention(launch.purposes, listOf(5, 10), restOfToday = null, minutesLeftToday = 10),
-            next(GuardState.Pause, PauseFinished, used(80)).effects.single(),
+            next(GuardState.Pause(t0), PauseFinished, used(80)).effects.single(),
         )
         assertEquals(
             Effect.ShowIntention(launch.purposes, listOf(5, 10, 15, 20), restOfToday = null, minutesLeftToday = 20),
-            next(GuardState.Pause, PauseFinished, used(70)).effects.single(),
+            next(GuardState.Pause(t0), PauseFinished, used(70)).effects.single(),
         )
     }
 
@@ -619,7 +619,7 @@ class GuardEngineTest {
     fun `seconds left still read as a minute`() {
         assertEquals(
             Effect.ShowIntention(launch.purposes, emptyList(), restOfToday = 1, minutesLeftToday = 1),
-            next(GuardState.Pause, PauseFinished, used(89, 30)).effects.single(),
+            next(GuardState.Pause(t0), PauseFinished, used(89, 30)).effects.single(),
         )
     }
 
@@ -642,7 +642,7 @@ class GuardEngineTest {
         var state: GuardState = GuardState.Idle
         fun go(event: GuardEvent) = next(state, event, usage).also { state = it.state; usage = it.usage }
 
-        go(InstagramOpened(t0))
+        go(InstagramOpened(at(-5))) // the 5-second pause is over at t0, when PauseFinished comes
         go(PauseFinished)
         go(IntentionChosen("Look something up", 5, at(7)))
         go(Tick(at(7 + 300)))
@@ -696,5 +696,36 @@ class GuardEngineTest {
 
     @Test
     fun `Close Instagram on the pause goes home`() =
-        assertTransition(GuardState.Pause, LeaveChosen, GuardState.Idle, Effect.Dismiss, Effect.GoHome)
+        assertTransition(GuardState.Pause(t0), LeaveChosen, GuardState.Idle, Effect.Dismiss, Effect.GoHome)
+
+    @Test
+    fun `the pause can't be skipped before its time`() {
+        val result = next(GuardState.Pause(at(5)), PauseFinished)
+        assertEquals(GuardState.Pause(at(5)), result.state)
+        assertTrue(result.effects.isEmpty())
+    }
+
+    @Test
+    fun `back within two minutes, the pause carries on with what's left of it`() {
+        val away = GuardState.Interrupted(at(5), pauseDone = false, leftAt = at(2))
+        val back = next(away, InstagramOpened(at(3)))
+        assertEquals(GuardState.Pause(at(5)), back.state)
+        assertEquals(listOf<Effect>(Effect.ShowPause(2)), back.effects)
+
+        val later = next(away, InstagramOpened(at(60)))
+        assertEquals(listOf<Effect>(Effect.ShowPause(0)), later.effects) // it ran out while away
+    }
+
+    @Test
+    fun `back within two minutes from the prompt, the prompt comes straight back`() {
+        val away = GuardState.Interrupted(at(5), pauseDone = true, leftAt = at(10))
+        assertTransition(away, InstagramOpened(at(40)), GuardState.Intention, showIntention)
+    }
+
+    @Test
+    fun `back after two minutes, a fresh pause`() {
+        val away = GuardState.Interrupted(at(5), pauseDone = false, leftAt = at(2))
+        assertTransition(away, InstagramOpened(at(200)), GuardState.Pause(at(205)), showPause)
+        assertEquals(GuardState.Idle, next(away, Tick(at(200))).state)
+    }
 }
